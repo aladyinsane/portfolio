@@ -10,6 +10,7 @@ const projects = defineCollection({
     kind: z.enum(["personal", "client-generalized"]),
     stack: z.array(z.string()),
     year: z.string(),
+    repoUrl: z.string().url().optional(),
     draft: z.boolean().default(false),
   }),
 });

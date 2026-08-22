@@ -45,6 +45,17 @@ const { Content } = await render(project);
       )}
     </div>
 
+    {project.data.repoUrl && (
+      <a
+        href={project.data.repoUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-4 inline-flex items-center gap-1 font-mono text-sm text-accent hover:text-accent-strong transition-colors"
+      >
+        view repo &rarr;
+      </a>
+    )}
+
     <div class="prose-case-study mt-10">
       <Content />
     </div>

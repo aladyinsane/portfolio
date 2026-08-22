@@ -1,6 +1,6 @@
 ---
 title: "Synthetic Data Generator"
-summary: "A four-stage pipeline that generates privacy-safe synthetic datasets — preserving cross-column statistical correlation — for testing in regulated environments where production data can't leave its walls."
+summary: "A four-stage pipeline that generates privacy-safe synthetic datasets — preserving cross-column statistical correlation — for testing in a locked-down environment where production data never leaves the room."
 order: 1
 kind: personal
 stack: ["Python", "NumPy", "SAS", "Statistics"]
@@ -12,10 +12,16 @@ draft: false
 
 In regulated environments — healthcare, government, insurance — production data almost
 never leaves its access boundary, even to build and test the pipelines that will
-eventually run against it. That usually leaves engineers testing against toy data that
-doesn't reflect what actually runs in production: skewed distributions, correlated
-fields, edge cases that only appear when columns interact with each other. Toy data
-hides exactly the bugs that realistic data would catch.
+eventually run against it. In one such environment, that boundary was strict: a
+locked-down Remote Desktop with no path to the open internet, where the only available
+tools were SAS 9.4 and a Python install limited to the standard library plus NumPy.
+Nothing else could be installed.
+
+That left engineers testing against toy data that didn't reflect what actually ran in
+production: skewed distributions, correlated fields, edge cases that only appear when
+columns interact with each other. There was no way to pull realistic data onto the
+machine, and no tooling available to generate it locally. Toy data hides exactly the
+bugs that realistic data would catch.
 
 ## Approach
 
@@ -45,10 +51,14 @@ exist.
 
 The result is a tool that lets testing happen against data that behaves like
 production — same distributions, same correlation structure — without a single real
-record involved. That closes a gap that otherwise either slows testing down (waiting
-on a sanitized data pull) or gets quietly skipped (testing against unrealistic
-fixtures and finding the real bugs after deployment).
+record involved, and without needing anything beyond what was already sitting on that
+locked-down machine.
 
-{/* TODO(Lauren): add concrete adoption/impact detail once you walk me through it —
-   e.g. what this replaced, how it changed testing turnaround, any validation
-   numbers you're comfortable sharing in generalized terms. */}
+It's run successfully twice so far, validating the full pipeline end to end against
+real profiled data. Broader adoption is the next step rather than a done deal — it
+hasn't been widely socialized yet, partly because the team it was built for skews
+non-technical, so getting it adopted will take deliberate onboarding rather than a
+passive rollout. The source is being made public shortly.
+
+{/* TODO(Lauren): add run-count/turnaround numbers once you have them (reminder
+   scheduled). Set repoUrl in frontmatter once the repo is public. */}

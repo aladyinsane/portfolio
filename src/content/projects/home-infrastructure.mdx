@@ -1,9 +1,9 @@
 ---
 title: "Home Infrastructure & Automation"
-summary: "A self-hosted Docker stack for home automation, plus a Python bill-pay automation system — the same engineering habits applied to problems nobody assigned."
-order: 3
+summary: "A small self-hosted Docker stack bridging a Ring doorbell onto a local automation platform, plus a Python bill-pay automation system — the same engineering habits applied to problems nobody assigned."
+order: 4
 kind: personal
-stack: ["Docker", "Python", "Home Assistant", "Tailscale", "n8n"]
+stack: ["Docker", "Python", "Home Assistant", "Tailscale"]
 year: "2023–present"
 draft: false
 ---
@@ -14,9 +14,9 @@ Two related, ongoing projects, both solving problems for a household of one inst
 of a client:
 
 **A self-hosted home automation stack.** A Docker Compose stack running Mosquitto
-(MQTT broker), ring-mqtt (bridges Ring devices onto MQTT), and Home Assistant, tied
-together with Tailscale for secure remote access and n8n for workflow automation —
-without exposing anything directly to the open internet.
+(MQTT broker), ring-mqtt (bridges a Ring doorbell camera onto MQTT), and Home
+Assistant, reachable remotely and securely through Tailscale instead of anything
+exposed to the open internet.
 
 **A bill-pay automation system.** A Python system that handles recurring bill logic
 against an Excel-based ledger, so bill tracking is automated and auditable instead of
@@ -26,8 +26,9 @@ manual and scattered across statements.
 
 Same engineering instincts as the paid work, applied without anyone requiring it:
 containerized services instead of ad hoc installs, a private mesh network instead of
-open ports, workflow automation instead of manual steps, and a version-trackable
-ledger instead of a shoebox of statements.
+open ports, and a version-trackable ledger instead of a shoebox of statements. It's
+deliberately small in scope right now — one device bridged in cleanly beats five
+bridged in sloppily.
 
 ## Why it's here
 
@@ -35,6 +36,6 @@ Employers only see the systems thinking you were assigned to apply. This is evid
 it's not switched on and off with a badge — it's how I default to building things,
 including the things nobody's paying me to build well.
 
-{/* TODO(Lauren): add specifics once you walk me through it — what the n8n
-   workflows actually automate, how many devices/integrations are in play, whether
-   the repo is public and worth linking. */}
+{/* TODO(Lauren): add bill-pay specifics once you walk me through it — what the
+   actual flow is (reads/categorizes statements? generates the ledger? flags
+   anomalies?), and whether either repo is public and worth linking. */}

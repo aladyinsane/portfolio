@@ -1,0 +1,42 @@
+---
+title: "2084"
+summary: "A self-hosted MUD built on Evennia — game design, backend, deployment, and networking all owned end to end, with puzzle design prioritized over grinding mechanics."
+order: 2
+kind: personal
+stack: ["Python", "Evennia", "Linux", "Networking"]
+year: "2023"
+draft: false
+---
+
+## What it is
+
+"2084" is a MUD — a text-based multiplayer game, the genre that predates and directly
+shaped the modern MMO — built on [Evennia](https://www.evennia.com/), a Python
+framework for this kind of persistent multiplayer world. It's self-hosted and
+self-administered: real infrastructure, running for real (if small) concurrent
+players, not a tutorial project left running on localhost.
+
+## Approach
+
+Most portfolio projects show a slice of a stack. This one is deliberately full-stack
+in the literal sense — every layer between "idea" and "players connected" was mine:
+
+- **Game design** — puzzle-driven content and world-building, with an explicit
+  priority on humor and craft over traditional grind-based progression loops.
+- **Backend** — Python/Evennia server logic: game state, command parsing,
+  persistence.
+- **Deployment & operations** — self-hosted on my own server, which meant owning
+  networking and firewall configuration, uptime, and the operational layer that
+  most data engineering roles abstract away behind a cloud provider's dashboard.
+
+## Why it's here
+
+It's the clearest evidence I have of end-to-end ownership outside of an assigned
+work project — design, build, ship, and keep running, including the systems
+administration and networking work that doesn't usually show up in an enterprise
+data role where infrastructure is someone else's team. It also demonstrates comfort
+with ambiguity: no ticket, no spec, no reviewer — just a system that has to work.
+
+{/* TODO(Lauren): confirm current status — is it live/joinable right now, worth
+   linking a connect address? any detail on scale (how long it's run, notable
+   puzzles, player/community size) you want included. */}

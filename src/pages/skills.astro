@@ -1,0 +1,69 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const groups = [
+  {
+    label: "languages",
+    items: ["Python", "SQL", "PySpark", "R", "SAS"],
+  },
+  {
+    label: "cloud & platforms",
+    items: [
+      "Azure Data Factory",
+      "Azure Synapse",
+      "Palantir Foundry",
+      "Docker",
+      "Tailscale",
+      "n8n",
+    ],
+  },
+  {
+    label: "practices",
+    items: [
+      "Data lake architecture",
+      "Pipeline design & orchestration",
+      "Cloud migrations",
+      "Payment / claims / risk data modeling",
+      "Statistical profiling & synthetic data generation",
+      "Data quality & validation",
+      "Regulated & compliance-heavy environments",
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Skills"
+  description="Languages, cloud platforms, and engineering practices — data lake architecture, pipeline design, cloud migrations, and regulated data modeling."
+>
+  <section class="max-w-4xl mx-auto px-6 pt-16 pb-8 sm:pt-20">
+    <p class="font-mono text-sm text-accent mb-4">$ cat skills.yaml</p>
+    <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-ink mb-4">
+      Skills
+    </h1>
+    <p class="text-ink-soft max-w-2xl leading-relaxed">
+      The stack I build with, and the practices that stay constant regardless of
+      which cloud or client I'm working with.
+    </p>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-6 pb-24">
+    <div class="grid sm:grid-cols-3 gap-8 mt-4">
+      {groups.map((group) => (
+        <div>
+          <h2 class="font-mono text-xs uppercase tracking-wider text-accent-strong mb-4 pb-2 border-b border-border">
+            {group.label}
+          </h2>
+          <ul class="space-y-2.5">
+            {group.items.map((item) => (
+              <li class="text-sm text-ink-soft pl-4 relative">
+                <span class="absolute left-0 text-accent font-mono">&rsaquo;</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

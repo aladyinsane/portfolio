@@ -1,0 +1,39 @@
+---
+title: "Price Transparency Data Lake"
+summary: "A data lake and automated pipelines ingesting machine-readable pricing files from 80+ healthcare payers under the federal Transparency in Coverage Act — externally-published data at volume, with automated quality monitoring replacing manual review."
+order: 4
+kind: client-generalized
+stack: ["Azure", "Python", "Data Lake Architecture"]
+year: "2018–present"
+draft: false
+---
+
+## Problem
+
+Under the federal Transparency in Coverage Act, healthcare payers are required to
+publish machine-readable files of their negotiated rates. "Machine-readable" doesn't
+mean uniform: 80+ payer organizations means 80+ different file structures, update
+cadences, and quirks, published externally with no coordination between sources.
+Manually tracking whether each one was current, complete, and usable didn't scale
+past a handful of payers, let alone the full set.
+
+## Approach
+
+Architected a data lake and automated pipelines to discover, acquire, and ingest
+these files at volume — treating large, messy, externally-published data as the
+normal case rather than a one-off integration to special-case around. Layered
+automated data quality metric reporting on top, across every source, so the question
+stopped being "did someone remember to check source #47 this week" and became a
+monitored pipeline that surfaces which sources are stale, incomplete, or malformed on
+its own.
+
+## Outcome
+
+Replaced source-by-source manual review — which never actually scaled to 80+ payers
+in practice — with a monitored pipeline that surfaces data quality problems instead
+of hiding them until someone stumbles onto a bad file downstream.
+
+{/* TODO(Lauren): add specifics from Monday's summary - scale/volume numbers, how
+   many sources monitored today, anything on turnaround or team adoption. Also
+   tighten the "year" field above - it's a placeholder for your whole Guidehouse
+   tenure, not this project's actual dates. */}

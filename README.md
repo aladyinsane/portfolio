@@ -3,7 +3,9 @@
 Lauren Chaplinski's personal portfolio site — built with [Astro](https://astro.build)
 and Tailwind CSS, deployed to Azure Static Web Apps.
 
-**Live:** https://victorious-water-0fbb0fa10.7.azurestaticapps.net/
+**Live:** https://laurenchaplinski.com
+(also reachable at https://www.laurenchaplinski.com and the underlying
+https://victorious-water-0fbb0fa10.7.azurestaticapps.net/)
 
 ## Development
 

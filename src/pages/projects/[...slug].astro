@@ -40,7 +40,7 @@ const { Content } = await render(project);
       {project.data.stack.map((item) => <Tag label={item} />)}
       {project.data.kind === "client-generalized" && (
         <span class="font-mono text-xs text-ink-faint italic">
-          client work — described in general, non-identifying terms
+          client work: described in general, non-identifying terms
         </span>
       )}
     </div>

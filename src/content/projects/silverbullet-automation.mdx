@@ -1,6 +1,6 @@
 ---
 title: "Self-Hosted Knowledge Base & Automation"
-summary: "A self-hosted personal knowledge base with six automated workflows — including a scoped Claude Code agent that reviews and proposes edits to the knowledge base itself every week — reachable only through a private mesh network, never the open internet."
+summary: "A self-hosted personal knowledge base with six automated workflows, including a scoped Claude Code agent that reviews and proposes edits to the knowledge base itself every week, reachable only through a private mesh network, never the open internet."
 order: 2
 kind: personal
 stack: ["n8n", "Tailscale", "Claude Code", "Node.js", "Git"]
@@ -12,7 +12,7 @@ draft: false
 
 A self-hosted notes and knowledge-base system that I write to daily from my phone and
 browser, backed by a private git repo for off-machine backup, and reachable remotely
-only through a Tailscale mesh network — never anything exposed to the open internet.
+only through a Tailscale mesh network, never anything exposed to the open internet.
 Layered on top of it: six automated workflows, orchestrated with n8n, that keep the
 knowledge base current without me doing the bookkeeping by hand.
 
@@ -21,25 +21,25 @@ knowledge base current without me doing the bookkeeping by hand.
 Each workflow solves a specific "someone has to do this every day or week, and it
 shouldn't be me" problem:
 
-- **Nightly dev-work summary** — pulls the day's commits across every repo I own,
+- **Nightly dev-work summary**: pulls the day's commits across every repo I own,
   summarizes them, and writes the result into that day's journal entry automatically.
-- **Nightly work-log summary** — scans local AI coding session transcripts and adds a
-  second summary of non-code work — research, decisions — to the same journal entry.
-- **Weekly knowledge-base review** — the most interesting one: a real Claude Code
+- **Nightly work-log summary**: scans local AI coding session transcripts and adds a
+  second summary of non-code work (research, decisions) to the same journal entry.
+- **Weekly knowledge-base review**: the most interesting one. A real Claude Code
   agent, scoped to read-only tools only (no edit, no shell, no network access), reads
   the week's journal and project pages, cross-references them against the rest of the
   knowledge base, and proposes consolidation or tagging changes as a checklist. It
-  never applies anything itself — I review and action its suggestions manually.
-- **Bookmark capture bridge** — tagging a link in a read-it-later app automatically
+  never applies anything itself; I review and action its suggestions manually.
+- **Bookmark capture bridge**: tagging a link in a read-it-later app automatically
   drops a formatted note into my inbox within the hour, and marks the source item
   processed so it's never re-imported.
-- **New-repo bridge** — creates a stub project page automatically the first time I
+- **New-repo bridge**: creates a stub project page automatically the first time I
   push a brand-new GitHub repo.
-- **Nightly backup snapshot** — commits and pushes any uncommitted changes to the
+- **Nightly backup snapshot**: commits and pushes any uncommitted changes to the
   private git remote every night, since real edits happen from the phone app and
   browser, neither of which is git-aware.
 
-Every workflow is idempotent — reruns don't duplicate output — and none of them
+Every workflow is idempotent (reruns don't duplicate output), and none of them
 depend on parsing command output that turned out to be unreliable in this particular
 environment; each one does its own read/merge/write instead of trusting a shell
 command's captured output. Secrets never live in the repo: every credential is
@@ -52,6 +52,6 @@ machine.
 The result is a personal system that runs itself: journal entries populate without
 manual upkeep, new repos and saved links show up in the right place automatically,
 and the knowledge base gets a standing weekly review from an agent that's read-only
-by design — it can suggest, but it can't touch anything, so the human stays the last
+by design: it can suggest, but it can't touch anything, so the human stays the last
 word. It's also fully documented as a rebuild runbook: the whole system could be
 stood back up on a new machine from the notes alone.

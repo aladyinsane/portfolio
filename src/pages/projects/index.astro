@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+
+const allProjects = await getCollection("projects", ({ data }) => !data.draft);
+const sorted = allProjects.sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title="Projects"
+  description="Case studies in data pipeline architecture, cloud migrations, and self-directed systems engineering."
+>
+  <section class="max-w-4xl mx-auto px-6 pt-16 pb-8 sm:pt-20">
+    <p class="font-mono text-sm text-accent mb-4">$ ls ./projects</p>
+    <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-ink mb-4">
+      Projects
+    </h1>
+    <p class="text-ink-soft max-w-2xl leading-relaxed">
+      A mix of client work I can describe only in general terms, and personal projects
+      I can show in full — pipelines, a self-hosted game, and infrastructure built for
+      no reason other than wanting it to exist.
+    </p>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-6 pb-24">
+    <div class="grid sm:grid-cols-2 gap-5 mt-8">
+      {sorted.map((project) => (
+        <ProjectCard
+          slug={project.id}
+          title={project.data.title}
+          summary={project.data.summary}
+          stack={project.data.stack}
+          year={project.data.year}
+          kind={project.data.kind}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

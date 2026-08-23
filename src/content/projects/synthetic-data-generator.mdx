@@ -1,0 +1,64 @@
+---
+title: "Synthetic Data Generator"
+summary: "A four-stage pipeline that generates privacy-safe synthetic datasets — preserving cross-column statistical correlation — for testing in a locked-down environment where production data never leaves the room."
+order: 1
+kind: personal
+stack: ["Python", "NumPy", "SAS", "Statistics"]
+year: "2024"
+draft: false
+---
+
+## Problem
+
+In regulated environments — healthcare, government, insurance — production data almost
+never leaves its access boundary, even to build and test the pipelines that will
+eventually run against it. In one such environment, that boundary was strict: a
+locked-down Remote Desktop with no path to the open internet, where the only available
+tools were SAS 9.4 and a Python install limited to the standard library plus NumPy.
+Nothing else could be installed.
+
+That left engineers testing against toy data that didn't reflect what actually ran in
+production: skewed distributions, correlated fields, edge cases that only appear when
+columns interact with each other. There was no way to pull realistic data onto the
+machine, and no tooling available to generate it locally. Toy data hides exactly the
+bugs that realistic data would catch.
+
+## Approach
+
+Built a four-stage pipeline that takes a real, access-restricted dataset and produces
+a synthetic one that's statistically indistinguishable from it at the aggregate level
+— with no real records or identifiers anywhere in the output.
+
+1. **Export** — pull the source dataset out of SAS into a form the rest of the
+   pipeline can work with.
+2. **Profile** — statistically characterize every column: distribution shape,
+   missingness, categorical frequencies, and the correlations between columns.
+3. **Generate** — synthesize new records with a Gaussian copula. The correlation
+   structure is modeled directly, via a correlation matrix and Cholesky
+   decomposition, and new values are sampled from it — so relationships between
+   columns survive even though no individual record is real.
+4. **Validate** — compare the synthetic dataset back against the source profile to
+   confirm the statistical properties actually held, rather than assuming the
+   generation step worked.
+
+The dependency footprint was a deliberate choice: NumPy is used only for the
+correlation matrix and Cholesky decomposition step. Everything else — SAS export
+handling, profiling, validation — is Python's standard library. For a tool meant to
+run inside locked-down, audited environments, every dependency needs a reason to
+exist.
+
+## Outcome
+
+The result is a tool that lets testing happen against data that behaves like
+production — same distributions, same correlation structure — without a single real
+record involved, and without needing anything beyond what was already sitting on that
+locked-down machine.
+
+It's run successfully twice so far, validating the full pipeline end to end against
+real profiled data. Broader adoption is the next step rather than a done deal — it
+hasn't been widely socialized yet, partly because the team it was built for skews
+non-technical, so getting it adopted will take deliberate onboarding rather than a
+passive rollout. The source is being made public shortly.
+
+{/* TODO(Lauren): add run-count/turnaround numbers once you have them (reminder
+   scheduled). Set repoUrl in frontmatter once the repo is public. */}

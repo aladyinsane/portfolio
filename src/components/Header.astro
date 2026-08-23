@@ -1,0 +1,39 @@
+---
+const navItems = [
+  { href: "/projects", label: "projects" },
+  { href: "/skills", label: "skills" },
+  { href: "/about", label: "about" },
+  { href: "/contact", label: "contact" },
+];
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string) {
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+}
+---
+
+<header class="border-b border-border">
+  <div class="max-w-4xl mx-auto px-6 py-5 flex items-center justify-between gap-6">
+    <a href="/" class="group flex items-baseline gap-2 shrink-0">
+      <span class="font-mono text-accent text-sm">&gt;</span>
+      <span class="font-semibold tracking-tight text-ink">
+        Lauren Chaplinski
+      </span>
+    </a>
+    <nav class="flex items-center gap-1 sm:gap-2 font-mono text-sm">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class={`px-2 sm:px-3 py-1.5 rounded transition-colors ${
+            isActive(item.href)
+              ? "text-accent-strong bg-accent-soft"
+              : "text-ink-soft hover:text-ink hover:bg-paper-alt"
+          }`}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>

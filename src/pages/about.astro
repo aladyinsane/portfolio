@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="About"
+  description="Lauren Chaplinski — data engineer and architect transitioning from consulting into independent contract work."
+>
+  <section class="max-w-2xl mx-auto px-6 pt-16 pb-24 sm:pt-20">
+    <p class="font-mono text-sm text-accent mb-4">$ cat about.md</p>
+    <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-ink mb-8">
+      About
+    </h1>
+
+    <div class="space-y-5 text-ink-soft leading-relaxed">
+      <p>
+        I'm a data engineer and architect. Eight years building production data
+        systems — data lakes, pipelines, cloud migrations — and twelve-plus years
+        working specifically with claims and risk data, most recently as a Managing
+        Consultant at a large consulting firm.
+      </p>
+      <p>
+        That work has mostly landed in regulated industries — healthcare and
+        government — not because I set out to specialize there, but because that's
+        where the highest-stakes data problems tend to live. Systems where a schema
+        mistake or a broken pipeline has compliance consequences, not just a bad
+        dashboard. I've come to think of that as the real training ground: the
+        habits that hold up there hold up anywhere.
+      </p>
+      <p>
+        I'm now transitioning from consulting into independent contract work. The
+        engineering doesn't change — I'm still designing pipelines, running cloud
+        migrations, and modeling data that has to be right the first time. What
+        changes is who I build it for, and how directly.
+      </p>
+      <p>
+        Outside of client work, I build things because I want them to exist: a
+        synthetic data generator, a self-hosted multiplayer game, a home automation
+        stack that runs on the same instincts as everything else I build — contained,
+        automated, and not held together with duct tape.
+      </p>
+    </div>
+
+    <div class="mt-10">
+      <a
+        href="/resume.pdf"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded bg-ink text-paper font-medium text-sm hover:bg-accent-strong transition-colors"
+      >
+        View résumé
+      </a>
+    </div>
+  </section>
+</BaseLayout>

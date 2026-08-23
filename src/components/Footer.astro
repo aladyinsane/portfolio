@@ -1,0 +1,23 @@
+---
+const email = "laurenchaplinski@gmail.com";
+const github = "https://github.com/aladyinsane";
+const linkedin = "https://www.linkedin.com/in/lauren-chaplinski";
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border mt-24">
+  <div class="max-w-4xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-xs text-ink-faint">
+    <p>&copy; {year} Lauren Chaplinski</p>
+    <div class="flex items-center gap-4">
+      <a href={`mailto:${email}`} class="hover:text-accent-strong transition-colors">
+        {email}
+      </a>
+      <a href={linkedin} target="_blank" rel="noopener noreferrer" class="hover:text-accent-strong transition-colors">
+        linkedin
+      </a>
+      <a href={github} target="_blank" rel="noopener noreferrer" class="hover:text-accent-strong transition-colors">
+        github
+      </a>
+    </div>
+  </div>
+</footer>

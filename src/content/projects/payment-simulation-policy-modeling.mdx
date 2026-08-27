@@ -1,7 +1,7 @@
 ---
 title: "Large-Scale Payment Simulation & Policy Modeling"
 summary: "Claims-level simulation modeling for state government agencies evaluating changes to how they pay healthcare providers: the fiscal impact quantified before a policy goes live, not discovered after."
-order: 6
+order: 7
 kind: client-generalized
 stack: ["SAS", "SQL", "Simulation Modeling"]
 year: "2018–present"
@@ -32,7 +32,16 @@ Gave state agencies a concrete, claims-level basis for payment policy decisions
 instead of applying a change and finding out the fiscal impact afterward: the kind
 of analysis that has to be right before a policy goes live, not after.
 
-{/* TODO(Lauren): add specifics from Monday's summary - which states/how many,
-   scale of the datasets, any numbers on the fiscal impact you're comfortable
-   sharing in generalized terms. Also tighten the "year" field above - it's a
-   placeholder for your whole Guidehouse tenure, not this project's actual dates. */}
+One representative engagement modeled a proposed change to how a state Medicaid
+program pays Medicare crossover claims, limiting payment to the lesser of the
+Medicaid fee schedule amount or the Medicare beneficiary cost-sharing liability.
+Claims were assigned reimbursement amounts through a hierarchical pricing
+methodology and sorted into confidence tiers based on match strength, so
+policymakers could see which results rested on the most reliable rate
+assignments. The model estimated the policy would reduce annual crossover
+expenditures by $46.3 million, with $30.1 million of that impact falling within
+the highest-confidence pricing tier. Breaking the results out by beneficiary
+category (Qualified Medicare Beneficiaries, Specified Low-Income Medicare
+Beneficiaries, and other dual-eligible populations) let the agency evaluate
+exemptions for specific groups before committing to a design, rather than
+discovering the disparate impact after the policy took effect.

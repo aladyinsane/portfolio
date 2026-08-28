@@ -1,12 +1,17 @@
 ---
 title: "Medicare Crossover \"Lesser-Of\" Payment Policy Simulation"
-summary: "Claim-level fiscal impact simulation for a proposed Medicaid policy limiting Medicare crossover payments to the lesser of the fee schedule amount or beneficiary cost-sharing liability: $46.3M in estimated annual savings, quantified before the policy went live."
+summary: "Claim-level fiscal impact modeling for a proposed Medicaid policy limiting Medicare crossover payments to the lesser of the fee schedule amount or beneficiary cost-sharing liability: $46M in estimated annual savings, quantified before the policy went live."
 order: 7
 kind: client-generalized
 stack: ["SAS", "SQL", "Simulation Modeling"]
 year: "2026"
 draft: false
 ---
+
+*Note: This kind of claim-level simulation work spans multiple state Medicaid agencies
+and payment policy questions: model the change before it goes
+live, quantify who it affects and by how much, before a state commits to a
+methodology that can shift substantial payments across its provider network. This project is a representative example.*
 
 ## Problem
 
@@ -38,11 +43,6 @@ exemptions or alternative treatment for specific recipient groups. Claims with
 unresolved pricing issues or special reimbursement requirements were identified
 and excluded, keeping the estimate reliable rather than padded with noise.
 
-This kind of claim-level simulation work spans multiple state Medicaid agencies
-and payment policy questions, not just this one: model the change before it goes
-live, quantify who it affects and by how much, before a state commits to a
-methodology that can shift substantial payments across its provider network.
-
 ## Outcome
 
 The model estimated that a lesser-of crossover payment policy would reduce
@@ -58,6 +58,3 @@ with the financial tradeoffs already quantified rather than discovered after the
 policy took effect. The resulting analytical framework is reusable for future
 crossover policy evaluations and can be refreshed as claims and fee schedule
 data change.
-
-{/* TODO(Lauren): confirm the actual year this engagement ran; "2025" is inferred
-   from the "2025 Medicare crossover claims data" detail, not confirmed. */}

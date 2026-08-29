@@ -1,0 +1,46 @@
+---
+title: "Rural Obstetric Service Resumption Payment Modeling"
+summary: "A provider-level payment simulation estimating roughly $3.1 million in combined potential annual reimbursement if four rural hospitals resumed obstetric services, giving a Medicaid agency quantified financial incentives to encourage restoration of rural maternity care."
+order: 9
+kind: client-generalized
+stack: ["SAS", "Excel", "APR DRG", "Payment Simulation"]
+year: "2026"
+draft: false
+---
+
+## Problem
+
+A Medicaid agency wanted to use payment policy to encourage rural hospitals to
+restore obstetric and maternity services they had stopped offering. To determine
+whether higher reimbursement could provide a meaningful incentive, the agency
+needed provider-specific estimates of what each hospital could receive if
+services resumed. Recent baseline claims, however, did not contain a full year
+of obstetric volume for every facility.
+
+## Approach
+
+Built a seven-program SAS simulation pipeline that reconstructed one year of
+pre-closure obstetric utilization for each hospital, combined it with two years
+of baseline inpatient claims where available, and identified obstetric,
+neonatal, and normal-newborn volume through APR DRG service lines.
+
+Repriced the claims under two scenarios using the agency's selected rate model:
+continued operation without obstetric services and resumed operation with
+historical obstetric volume restored. Applied the corresponding rural hospital
+base rates, DRG relative weights, age and service adjusters, transfer rules,
+cost-to-charge ratios, and outlier policies, then summarized the differences by
+provider and DRG so decision-makers could see both total reimbursement effects
+and the service volume underlying them.
+
+## Outcome
+
+The model estimated approximately $3.1 million in combined potential annual
+reimbursement increases if four rural hospitals resumed obstetric services,
+with provider-level estimates ranging from roughly $247,000 to $1.5 million.
+This gave the agency facility-specific payment incentives it could use in
+discussions with hospitals about restoring maternity care, replacing a general
+appeal to reopen services with a quantified financial case for each facility.
+
+The reusable pipeline also made the analysis refreshable as claims volume,
+hospital participation, or payment rates change, rather than requiring each
+service-restoration scenario to be rebuilt from scratch.

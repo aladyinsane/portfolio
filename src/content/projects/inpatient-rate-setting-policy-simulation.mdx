@@ -1,0 +1,49 @@
+---
+title: "Annual Inpatient Hospital Rate Setting & Policy Simulation"
+summary: "A claim-level rate-setting pipeline and four-scenario policy simulation using two years of inpatient claims to update hospital payment rates, quantify provider-level tradeoffs, and support selection of a model affecting roughly $148 million in modeled payments."
+order: 10
+kind: client-generalized
+stack: ["SAS", "Excel", "APR DRG", "Payment Simulation", "Solventum GPCS"]
+year: "2026"
+draft: false
+---
+
+## Problem
+
+A Medicaid agency needed to set annual inpatient hospital rates
+while moving to a new version of its APR-DRG methodology and
+responding to changes in rural hospital services and provider participation. The
+agency had to balance budget neutrality, hospital cost coverage, outlier policy,
+and access goals without relying on a single statewide rate change that obscured
+material differences across hospital groups.
+
+## Approach
+
+Built and ran a repeatable SAS rate-setting pipeline using inpatient
+claims data, hospital Medicare cost reports, inflation factors, and APR-DRG relative weights.
+The pipeline regrouped claims under both the current and new DRG versions,
+estimated claim-level costs and cost-to-charge ratios, recalculated outlier
+thresholds, established budget targets, and generated provider- and service-level
+validation outputs.
+
+Modeled four rate-setting alternatives across roughly 14,400 inpatient stays,
+including separate base-rate treatment based on hospital service availability,
+updated outlier thresholds, provider service changes, and newly participating
+hospitals without historical claims. Compared each scenario
+by hospital category, payment-to-cost ratio, case mix, base payment, and outlier
+payment so agency leaders could see the financial and policy tradeoffs before
+selecting rates.
+
+## Outcome
+
+The analysis enabled the agency to select a final rate model and ultimately
+implement new base rates covering roughly $148 million in modeled inpatient
+payments. The selected rates preserved a budget-neutral base rate for most
+hospital categories while directing additional budgeted reimbursement to rural
+hospitals providing obstetrics and maternity services, bringing that hospital
+group's modeled payments to 100% of estimated cost in aggregate.
+
+The same pipeline established a reusable annual process for claims preparation,
+DRG-version migration, costing, simulation, validation, and provider-level
+review, allowing future rate cycles and policy alternatives to be refreshed
+instead of rebuilt.

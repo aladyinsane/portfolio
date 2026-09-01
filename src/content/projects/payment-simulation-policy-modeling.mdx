@@ -1,47 +1,60 @@
 ---
-title: "Large-Scale Payment Simulation & Policy Modeling"
-summary: "Claims-level simulation modeling for state government agencies evaluating changes to how they pay healthcare providers: the fiscal impact quantified before a policy goes live, not discovered after."
-order: 7
+title: "Medicare Crossover \"Lesser-Of\" Payment Policy Simulation"
+summary: "Claim-level fiscal impact modeling for a proposed Medicaid policy limiting Medicare crossover payments to the lesser of the fee schedule amount or beneficiary cost-sharing liability: $46M in estimated annual savings, quantified before the policy went live."
+order: 8
 kind: client-generalized
 stack: ["SAS", "SQL", "Simulation Modeling"]
-year: "2018–present"
+year: "2026"
 draft: false
 ---
 
+*Note: This kind of claim-level simulation work spans multiple state Medicaid agencies
+and payment policy questions: model the change before it goes
+live, quantify who it affects and by how much, before a state commits to a
+methodology that can shift substantial payments across its provider network. This project is a representative example.*
+
 ## Problem
 
-State government agencies considering changes to how they pay healthcare providers
-need to know the fiscal impact before committing: a change to a payment methodology
-can shift hundreds of millions of dollars across a state's provider network, and
-finding that out after the policy takes effect isn't an option.
+A state Medicaid agency was evaluating whether to replace its existing Medicare
+crossover reimbursement approach with a "lesser of" payment policy: limiting
+Medicaid payments to the lesser of the Medicaid fee schedule amount or the
+Medicare beneficiary cost-sharing liability. Before committing to a policy that
+would reshape payments across the state's Medicare-Medicaid dual-eligible
+population, the agency needed a reliable fiscal impact estimate and a clear
+picture of how different beneficiary populations would be affected, the kind of
+analysis that has to be right before a policy goes live, not discovered after.
 
 ## Approach
 
-Modeled statewide claims datasets to simulate projected payments under proposed
-methodology changes against historical baselines, comparing standard hospital
-payment classification systems used across state Medicaid programs, running
-case-mix analysis, and supporting rate development for multiple state agencies. Built
-claim-line-level cost models using cost-to-charge ratios derived from federal cost
-report data, and produced the calculations states are required to submit to CMS (the
-federal agency overseeing Medicare and Medicaid) to demonstrate payments stay within
-regulatory limits.
+Built a claim-level payment simulation using a full year of Medicare crossover
+claims data and the state's Medicaid fee schedules. Assigned Medicaid
+reimbursement amounts through a hierarchical pricing methodology using revenue
+codes, procedure codes, modifiers, and provider-type-specific fee schedules,
+then sorted claims into confidence tiers based on the strength of each rate
+assignment match, so agency staff could distinguish highly reliable estimates
+from lower-confidence ones rather than treating the whole model as equally
+certain.
+
+Modeled current crossover payments against the simulated lesser-of methodology,
+then broke the comparison out by beneficiary category: Qualified Medicare
+Beneficiaries (QMB), Specified Low-Income Medicare Beneficiaries (SLMB), and
+other Medicare-Medicaid populations, to support policy discussions about
+exemptions or alternative treatment for specific recipient groups. Claims with
+unresolved pricing issues or special reimbursement requirements were identified
+and excluded, keeping the estimate reliable rather than padded with noise.
 
 ## Outcome
 
-Gave state agencies a concrete, claims-level basis for payment policy decisions
-instead of applying a change and finding out the fiscal impact afterward: the kind
-of analysis that has to be right before a policy goes live, not after.
+The model estimated that a lesser-of crossover payment policy would reduce
+Medicaid crossover expenditures by $46.3 million annually across the modeled
+claims population, with $30.1 million of that impact falling within the
+highest-confidence pricing tier: a subset of results policymakers could rely on
+with the least uncertainty.
 
-One representative engagement modeled a proposed change to how a state Medicaid
-program pays Medicare crossover claims, limiting payment to the lesser of the
-Medicaid fee schedule amount or the Medicare beneficiary cost-sharing liability.
-Claims were assigned reimbursement amounts through a hierarchical pricing
-methodology and sorted into confidence tiers based on match strength, so
-policymakers could see which results rested on the most reliable rate
-assignments. The model estimated the policy would reduce annual crossover
-expenditures by $46.3 million, with $30.1 million of that impact falling within
-the highest-confidence pricing tier. Breaking the results out by beneficiary
-category (Qualified Medicare Beneficiaries, Specified Low-Income Medicare
-Beneficiaries, and other dual-eligible populations) let the agency evaluate
-exemptions for specific groups before committing to a design, rather than
-discovering the disparate impact after the policy took effect.
+Breaking the results out by beneficiary category showed that estimated savings
+varied substantially across QMB, SLMB, and other dual-eligible populations,
+letting the agency evaluate exemptions or alternative implementation options
+with the financial tradeoffs already quantified rather than discovered after the
+policy took effect. The resulting analytical framework is reusable for future
+crossover policy evaluations and can be refreshed as claims and fee schedule
+data change.

@@ -13,7 +13,7 @@ draft: false
 
 We ran a shared grocery list in iOS Reminders for years and it worked, right up until one
 iCloud account filled up and sync started failing without saying anything. The list looked
-current on both phones. It wasn't. You find that out standing in the shop.
+current on both phones. It wasn't. You find that out standing in the store.
 
 That is a specific and nastier failure than an outage: an app that is down tells you it's
 down, and you adapt. An app that is quietly wrong keeps your confidence while feeding you
@@ -30,7 +30,7 @@ The project runs on a written set of principles, ordered, with the rule that whe
 collide the lower-numbered one wins. Sync reliability is principle 1; "never lie about
 state" is principle 2. Every architecture decision gets an ADR that has to point at the
 principle it serves and name the alternatives it rejected, and ADRs are immutable once
-accepted, so changing our minds means a new one superseding the old rather than a quiet
+accepted, so changing my mind means a new one superseding the old rather than a quiet
 edit to history.
 
 The decisions that fell out of that:
@@ -76,7 +76,7 @@ or duplicated.
 ## Outcome
 
 In daily use on two phones. Items are added, checked off, edited and cleared offline in a
-shop with no signal, and drain when signal returns. The status line is always on screen
+store with no signal, and drain when signal returns. The status line is always on screen
 and always true: synced just now, syncing, or offline with a count of what's waiting.
 
 The two-device behavior has been confirmed on real hardware rather than only in tests.
@@ -85,8 +85,7 @@ expires. The documentation carries a standing check of the form "is this still t
 rather than "did I touch it?", plus a script that catches the mechanical half (broken
 links, ADRs missing from the index, stale test counts in prose).
 
-Known gaps are written down rather than glossed. Per-token rate limiting is specified in
-ADR-0004 and not yet implemented, deferred deliberately because Cloudflare's per-Worker
-binding had an unstable API and a moving dependency looked like the wrong trade for a
-defense-in-depth measure on a two-user list. The roadmap says so, along with what it would
-actually buy and the three options for closing it.
+Known gaps are documented. Per-token rate limiting is specified in an ADR and not yet 
+implemented, deferred deliberately because Cloudflare's per-Worker binding had an unstable
+API and a moving dependency looked like the wrong trade for a defense-in-depth measure on
+a two-user list.

@@ -1,0 +1,91 @@
+---
+title: "Offline-First Shared Grocery List"
+summary: "A two-person grocery list built around one guarantee: both phones show the same list, and when they don't, the app says so out loud. Offline-first sync, no accounts, no recurring cost, in daily use."
+order: 11
+kind: personal
+stack: ["TypeScript", "React", "Cloudflare Workers", "D1", "PWA", "Vite"]
+year: "2026"
+repoUrl: "https://github.com/aladyinsane/grocery-list"
+draft: false
+---
+
+## Problem
+
+We ran a shared grocery list in iOS Reminders for years and it worked, right up until one
+iCloud account filled up and sync started failing without saying anything. The list looked
+current on both phones. It wasn't. You find that out standing in the store.
+
+That is a specific and nastier failure than an outage: an app that is down tells you it's
+down, and you adapt. An app that is quietly wrong keeps your confidence while feeding you
+stale data. Every design decision in this project is aimed at that one failure mode.
+
+The second constraint is a person. One of the two users has no interest in apps and no
+obligation to develop one. That rules out logins, settings screens, anything with a
+concept to learn, and anything that expires and needs redoing. Setup had to be: tap a
+link, tap "Add to Home Screen," once, forever.
+
+## Approach
+
+The project runs on a written set of principles, ordered, with the rule that when two
+collide the lower-numbered one wins. Sync reliability is principle 1; "never lie about
+state" is principle 2. Every architecture decision gets an ADR that has to point at the
+principle it serves and name the alternatives it rejected, and ADRs are immutable once
+accepted, so changing my mind means a new one superseding the old rather than a quiet
+edit to history.
+
+The decisions that fell out of that:
+
+- **A PWA rather than a native iOS app.** TestFlight builds expire every 90 days, which is
+  the exact class of scheduled maintenance the project exists to escape.
+- **A Cloudflare Worker plus D1, serving the app from its own origin.** Free tier, nothing
+  to renew. Supabase was rejected on the specific detail that its free tier pauses after
+  seven days idle.
+- **A secret link per household, no accounts.** The threat model here is friction, not
+  attackers. It's a grocery list.
+- **Polling on a monotonic revision cursor rather than websockets.** A cursor cannot miss
+  an update; a dropped socket message can, silently. And reconnect logic would have needed
+  the cursor anyway, so the websocket was pure additional surface.
+
+The sync protocol is the heart of it, and it's built as a stack of small properties, each
+one killing a specific way sync goes wrong. IDs are UUIDs generated on the phone before an
+item ever touches the network, so a retried request can't duplicate an item. Every change
+is appended to a durable queue in `localStorage` before any network call and removed only
+on acknowledgment, so an iOS process kill in someone's pocket doesn't lose it. Mutations
+apply to the local replica immediately and the UI renders from the replica, so the network
+is never between a tap and a pixel. Merging is per-field last-write-wins with independent
+timestamps for the name and the checked state, and deletion is a tombstone, so two people
+editing the same item at once converge instead of clobbering each other.
+
+Automatic categorization into aisles is the feature that turns a list of things into a
+route through a building, and it had to work without giving back any of the guarantees the
+sync protocol had just secured. So it runs on the client at the moment an item is added,
+and the result is stored as a synced field rather than computed at render time. That one
+choice means an offline add gets categorized instantly with no network, and both phones
+agree about the aisle by the same mechanism that already makes them agree about the name.
+Categories come from the household's own history first (correcting "oat milk" once teaches
+it), then a static dictionary of a few hundred items, then "Other". An LLM fallback for
+unrecognized items was considered and declined on offline, latency and recurring-cost
+grounds, but left reviewable with an explicit trigger: if "Other" is still routinely
+occupied after a month of real shopping, that's evidence and it earns a new ADR.
+
+Sync logic is pure and unit-tested without a network, but tests are the backstop, not the
+proof. Anything touching sync also gets a two-device manual run: add on phone A, check off
+on phone B, airplane mode, edit both, reconnect, confirm both converge with nothing lost
+or duplicated.
+
+## Outcome
+
+In daily use on two phones. Items are added, checked off, edited and cleared offline in a
+store with no signal, and drain when signal returns. The status line is always on screen
+and always true: synced just now, syncing, or offline with a count of what's waiting.
+
+The two-device behavior has been confirmed on real hardware rather than only in tests.
+Nothing about it needs periodic attention: no subscription, no certificate, no build that
+expires. The documentation carries a standing check of the form "is this still true?"
+rather than "did I touch it?", plus a script that catches the mechanical half (broken
+links, ADRs missing from the index, stale test counts in prose).
+
+Known gaps are documented. Per-token rate limiting is specified in an ADR and not yet 
+implemented, deferred deliberately because Cloudflare's per-Worker binding had an unstable
+API and a moving dependency looked like the wrong trade for a defense-in-depth measure on
+a two-user list.

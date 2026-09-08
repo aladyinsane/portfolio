@@ -9,6 +9,12 @@ on:
     branches:
       - main
 
+# A newer commit on the same PR makes the in-flight preview build pointless.
+# Cancel it so each push to a PR keeps just one running build, not a stack of them.
+concurrency:
+  group: swa-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')

@@ -1,0 +1,88 @@
+---
+title: "Toddler Meal Planning System"
+summary: "A weekly meal planner that replaced a hand-maintained eight-tab spreadsheet with one data file per week, two generated outputs, and a set of automated checks that refuse to let a nutritionally or logistically broken week reach the kitchen."
+order: 12
+kind: personal
+stack: ["Python", "Claude Code", "JSON", "HTML"]
+year: "2026"
+draft: false
+---
+
+## Problem
+
+Feeding a toddler on a plan is a small weekly data problem wearing a domestic disguise.
+There are real constraints: an iron target, protein rotation across the week, food safety
+recalls that open and close, a four-day clock on anything thawed, a ceiling on how much
+Sunday prep is realistic, and a set of hard-won facts about what he will actually eat.
+There's also a weekly grocery run, which means that by Tuesday the plan is constrained by
+what is physically in the house.
+
+For months this lived in an eight-tab spreadsheet, and the spreadsheet was both the source
+of truth and the thing printed for the kitchen. That's the flaw. Every mid-week change ("he
+was home for lunch after all," "prep didn't happen Sunday," "we're out of oats") became a
+hand-edit against a document that had to stay internally consistent across eight tabs, and
+nothing checked whether it still was.
+
+## Approach
+
+Separate the data from the deliverable. One `plan.json` per week is the canonical record,
+named by that week's Monday, alongside a permanent library of recipe cards shared across
+weeks. Everything else is generated, and nothing generated is ever hand-edited.
+
+Two outputs come off the same data file: a printable kitchen sheet, and a phone page for
+mid-week feedback that publishes to one stable URL because it's a home-screen bookmark.
+Taps on the phone page (ate, skipped, swapped, plus notes) feed back into the week's
+feedback file, which is the input to the next week's build. Generators are Python, standard
+library only.
+
+Two independent checks guard two different things, and keeping them separate is the point:
+
+- `checks.py` validates a week's data: day structure, meal composition, iron totals landing
+  in range on home-lunch days, protein rotation across the home lunches, every referenced
+  recipe actually existing, the Sunday prep ceiling, the four-day thaw rule, and date
+  coherence (the week starts on a Monday, prep is the Sunday before, every "Fri Sep 4" in
+  free text is a real date that falls where it claims to). The rule is fix the data, not
+  the check, unless the check is provably wrong.
+- `check_render.py` guards the generators. It renders a frozen fixture and byte-compares
+  both outputs against golden files. The fixture ships its own pinned recipe cards, so
+  editing the real recipe library never trips it. That separation matters, because a recipe
+  edit legitimately rewrites the printed sheet of every past week that referenced it, while
+  a generator change silently altering output is a bug.
+
+The plan itself carries its own shock absorbers, which is the design decision I'd defend
+hardest. Every prep task has an "if this didn't happen" line and every away day has an "if
+he's home instead" lunch, printed on the sheet. Most mid-week wobbles therefore need no
+replan at all, because the answer is already on the page in the kitchen. When a real
+rearrangement is needed, the rule is replan from today forward only: past days are frozen
+history, and remaining days may use only what's already in the house unless a top-up shop
+is explicitly approved.
+
+The operating knowledge lives in a Claude Code skill rather than in the code, as a dated
+log of what feedback revealed: elaborate breakfasts get skipped, so weekday breakfasts stay
+fast and familiar. Morning snacks were skipped six days out of seven on days he was out, so
+they're only planned on days he's home. Prep slipped to a Monday once and took out both
+Monday breakfast and the morning snack, so Monday's first two slots are now required to be
+prep-independent, and a slipped prep day costs nothing.
+
+## Outcome
+
+In weekly use. A build takes a single confirmation (which days he's home for lunch), then
+reads last week's feedback and carryover, re-checks current food safety recalls fresh every
+week rather than carrying forward last week's findings, writes the new week, runs the
+checks, regenerates both outputs, and republishes the phone page to its permanent URL.
+
+The checks have caught real problems before they reached the kitchen, which is the whole
+argument for having them: a broken week now fails at generation time instead of at 6pm on a
+Wednesday. Carryover and the already-have list mean the grocery list shrinks to what's
+genuinely missing rather than restating the pantry.
+
+Two of the sharper lessons came from failures rather than design. Branching broke this repo
+in practice: one session built the live week on a branch while another synced feedback to
+`main`, so the week actually being cooked existed only on an unmerged branch. For a repo
+where the working copy *is* the current week, that split was worse than the risk a pull
+request would have caught, so this repo commits straight to `main` as a deliberate,
+documented exception, with the automated checks as the safety net instead of review.
+Similarly, republishing the phone page by file path quietly created a second page at a new
+URL, because the path changes every Monday while the bookmark does not. Both are written
+down in the repo as rules with the incident that produced them, which is the only form of
+that lesson that survives.

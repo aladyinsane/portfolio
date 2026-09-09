@@ -2,50 +2,42 @@ name: Azure Static Web Apps CI/CD
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
+    branches: [main]
 
-# A newer commit on the same PR makes the in-flight preview build pointless.
-# Cancel it so each push to a PR keeps just one running build, not a stack of them.
-concurrency:
-  group: swa-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-# Repo default is read-only. The deploy action needs pull-requests: write to post
-# the "stage site is ready" comment with the preview URL on each PR.
-permissions:
-  contents: read
-  pull-requests: write
+# No workflow-level concurrency. Each job below owns its own lane so a PR event can
+# never cancel (or be cancelled by) a production deploy. The old shared group keyed on
+# github.ref put every pull_request activity type — including `closed` — and the
+# push-to-main run into contention at merge time, which cancelled the production deploy
+# on runs #78 and #84.
 
 jobs:
-  build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+  # Production. Every push to main deploys the live site. A newer merge cancels an
+  # in-flight deploy of an older one. Safe: Azure Static Web Apps uploads the whole
+  # build and then swaps atomically, so a cancelled deploy leaves the previous version
+  # serving rather than a half-uploaded site.
+  production:
+    if: github.event_name == 'push'
+    name: Deploy production
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    permissions:
+      contents: read
+    concurrency:
+      group: swa-production
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
+      - run: npm ci
+      - run: npm run build
+      - uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -54,14 +46,50 @@ jobs:
           output_location: ""
           skip_app_build: true
 
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+  # PR preview. Open, reopen, or a new commit to a PR builds that PR's own staging
+  # environment. A new commit cancels the in-flight preview build for the same PR.
+  pr_preview:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    name: Deploy PR preview
     runs-on: ubuntu-latest
-    name: Close Pull Request Job
+    permissions:
+      contents: read
+      pull-requests: write
+    concurrency:
+      group: swa-pr-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          app_location: dist
+          output_location: ""
+          skip_app_build: true
+
+  # PR teardown. When a PR closes (merged or not), remove its staging environment.
+  # Its own lane, never cancelled and never cancelling — a teardown must always finish.
+  pr_teardown:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    name: Tear down PR preview
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    concurrency:
+      group: swa-pr-teardown-${{ github.event.pull_request.number }}
+      cancel-in-progress: false
+    steps:
+      - uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: close

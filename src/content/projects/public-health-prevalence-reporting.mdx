@@ -1,0 +1,34 @@
+---
+title: "Public Health Prevalence Reporting"
+summary: "Built a reproducible analytics and reporting workflow that compares published mental health condition and substance use prevalence estimates across age cohorts, giving public-sector stakeholders a clearer, methodologically documented view of trends and benchmarks."
+order: 13
+kind: client-generalized
+stack: ["SAS", "Python", "Power BI", "DevOps"]
+year: "2026"
+draft: false
+---
+
+## Problem
+
+A public-sector healthcare organization needed to compare published behavioral health
+prevalence estimates across its service area and broader benchmarks. Source releases 
+used different periods, geographies, estimation methods, and formats, making a direct 
+trend view potentially misleading without documented selection and comparability rules.
+
+## Approach
+
+Built a reproducible data preparation workflow that filters and standardizes published
+estimates, maps comparable measures across releases, preserves survey-period labels, 
+and separates non-comparable periods rather than interpolating them. Produced both a 
+portable interactive reporting model and presentation-ready comparison views, with 
+validation checks for source and output schemas, keys, row counts, ranges, and 
+selected value equivalence.
+
+## Outcome
+
+Deployed the interactive report through testing and production environments for 
+stakeholder review and public access. The reporting capability brings historical, 
+current, and benchmark prevalence estimates into a single documented analytical 
+structure with transparent methodology, source traceability, and explicit caveats for
+methodological breaks and non-comparable estimates. Stakeholder review also prompted
+a follow up request for presentation-ready time-series comparisons.

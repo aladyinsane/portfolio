@@ -76,6 +76,9 @@ jobs:
           app_location: dist
           output_location: ""
           skip_app_build: true
+          # Dependabot-triggered runs cannot read repo Actions secrets, so the deploy token
+          # is empty there. Skip the preview deploy instead of failing the check.
+          skip_deploy_on_missing_secrets: true
 
   # PR teardown. When a PR closes (merged or not), remove its staging environment.
   # Its own lane, never cancelled and never cancelling — a teardown must always finish.
